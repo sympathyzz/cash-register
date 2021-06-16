@@ -36,7 +36,21 @@ class CashRegisterTest {
 		assertTrue(spyPrinter.hasExecutePrint);
 	}
 
+	@Test
+	void should_process_execute_printing_with_purchase_by_spy() {
+		//given
+		SpyPrinter spyPrinter=new SpyPrinter();
+		CashRegister cashRegister = new CashRegister(spyPrinter);
+		String content="Gavin";
+		SpyPurchase spyPurchase=new SpyPurchase(content);
+		//when
+		cashRegister.process(spyPurchase);
+		//then
+		//verify that cashRegister.process will trigger print
+		assertTrue(spyPrinter.hasExecutePrint);
+		assertEquals(content,spyPurchase.printContent);
 
+	}
 
 	private class SpyPrinter extends Printer {
 		boolean hasExecutePrint=false;
@@ -47,5 +61,15 @@ class CashRegisterTest {
 		}
 	}
 
+	private class SpyPurchase extends Purchase{
+		private String printContent;
+		public SpyPurchase(String content) {
+			this.printContent=content;
+		}
 
+		@Override
+		public String asString() {
+			return printContent;
+		}
+	}
 }
